@@ -5,57 +5,30 @@
  */
 #define CVECTOR_LOGARITHMIC_GROWTH
 
-#include "cvector.h"
+#include "list.h"
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
+	List(int) list = NULL;
 
-	/* this is the variable that will store the array, you can have
-	 * a vector of any type! For example, you may write float *v = NULL,
-	 * and you'd have a vector of floats :-). NULL will have a size
-	 * and capacity of 0. additionally, vector_begin and vector_end will
-	 * return NULL on a NULL vector. Alternatively, for clarity of writing
-	 * use can use the cvector_vector_type macro to define a vector of a
-	 * given type.
-	 */
-	cvector_vector_type(int) v = NULL;
+	push_back(list, 10);
+	push_back(list, 20);
+	push_back(list, 30);
 
-	(void)argc;
-	(void)argv;
+	pop_back(list);
 
-	/* add some elements to the back */
-	cvector_push_back(v, 10);
-	cvector_push_back(v, 20);
-	cvector_push_back(v, 30);
+	printf("pointer : %p\n", list);
+	printf("capacity: %lu\n", list_capacity(list));
+	printf("size    : %lu\n", list_size(list));
 
-	/* and remove one too */
-	cvector_pop_back(v);
-
-	/* print out some stats about the vector */
-	printf("pointer : %p\n", (void *)v);
-	printf("capacity: %lu\n", cvector_capacity(v));
-	printf("size    : %lu\n", cvector_size(v));
-
-	/* iterator over the vector using "iterator" style */
-	if (v) {
-		int *it;
-		int i = 0;
-		for (it = cvector_begin(v); it != cvector_end(v); ++it) {
-			printf("v[%d] = %d\n", i, *it);
-			++i;
-		}
-	}
-
-	/* iterator over the vector standard indexing too! */
-	if (v) {
+	if (list) {
 		size_t i;
-		for (i = 0; i < cvector_size(v); ++i) {
-			printf("v[%lu] = %d\n", i, v[i]);
+		for (i = 0; i < list_size(list); ++i) {
+			printf("v[%lu] = %d\n", i, list[i]);
 		}
 	}
 
-	/* well, we don't have destructors, so let's clean things up */
-	cvector_free(v);
+	delete_list(list);
 
 	return 0;
 }
